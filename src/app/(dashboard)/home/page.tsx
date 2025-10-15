@@ -1,7 +1,6 @@
 "use client";
 
-import type { Metadata } from "next";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useAppSelector } from "@/store/hooks";
 
 // TypeScript interfaces
@@ -14,14 +13,37 @@ interface ChatMessage {
 interface SendMessageResponse {
 	messageHistoryArray: ChatMessage[];
 	conversationId: string;
+	error?: string;
 }
 
 interface ConversationResponse {
 	messageHistoryArray: ChatMessage[];
+	error?: string;
 }
 
 interface UserDataFilesResponse {
 	files: string[];
+}
+
+interface UploadResponse {
+	ok?: boolean;
+	message?: string;
+	error?: string;
+	file?: {
+		originalName: string;
+		savedAs: string;
+		absolutePath: string;
+		size: number;
+		mimeType: string;
+	};
+	record?: {
+		id: string;
+		userId: string;
+		pathToFile: string;
+		filename: string;
+		createdAt: string;
+		updatedAt: string;
+	};
 }
 
 export default function Home() {
@@ -42,11 +64,7 @@ export default function Home() {
 	const [chatInput, setChatInput] = useState("");
 	const [conversationId, setConversationId] = useState<string>("");
 
-	useEffect(() => {
-		fetchUserContextDataFiles();
-	}, []);
-
-	const fetchUserContextDataFiles = async () => {
+	const fetchUserContextDataFiles = useCallback(async () => {
 		try {
 			const res = await fetch(
 				`${process.env.NEXT_PUBLIC_API_BASE_URL}/data/user-data-files-list`,
@@ -72,7 +90,11 @@ export default function Home() {
 			setStatus(errorMsg);
 			alert("Failed to fetch files. Please try again.");
 		}
-	};
+	}, [token]);
+
+	useEffect(() => {
+		fetchUserContextDataFiles();
+	}, [fetchUserContextDataFiles]);
 
 	const handleDeleteUserContextDataFile = async (filename: string) => {
 		try {
@@ -152,7 +174,7 @@ export default function Home() {
 			);
 
 			const contentType = response.headers.get("Content-Type");
-			let resJson: any = null;
+			let resJson: UploadResponse | null = null;
 
 			if (contentType?.includes("application/json")) {
 				resJson = await response.json();
@@ -213,7 +235,7 @@ export default function Home() {
 				setChatInput("");
 			} else {
 				const errorMessage =
-					(resJson as any)?.error ||
+					resJson?.error ||
 					`There was a server error: ${response.status}`;
 				console.error(errorMessage);
 				alert(errorMessage);
@@ -253,7 +275,7 @@ export default function Home() {
 				setMessageHistoryArray(resJson.messageHistoryArray);
 			} else {
 				const errorMessage =
-					(resJson as any)?.error ||
+					resJson?.error ||
 					`There was a server error: ${response.status}`;
 				console.error(errorMessage);
 				alert(errorMessage);

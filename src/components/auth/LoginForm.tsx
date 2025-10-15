@@ -5,7 +5,7 @@ import Button from "@/components/ui/button/Button";
 import { EyeCloseIcon, EyeIcon } from "@/icons";
 import Link from "next/link";
 import Image from "next/image";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useRouter } from "next/navigation";
 import { loginUser } from "@/store/features/user/userSlice";
@@ -30,8 +30,6 @@ export default function LoginForm() {
 			router.push("/home");
 			return;
 		}
-
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [userReducer.token, router]);
 
 	const handleClickLogin = async () => {
