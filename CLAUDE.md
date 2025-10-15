@@ -11,6 +11,7 @@ This is a TypeScript Next.js dashboard application using App Router, Tailwind CS
 ## Common Commands
 
 ### Development
+
 ```bash
 npm run dev          # Start development server
 npm run build        # Production build
@@ -25,6 +26,7 @@ npm run lint         # Run ESLint
 The application uses Next.js 15 App Router with route groups for layout organization:
 
 - `src/app/(dashboard)/` - Dashboard pages with sidebar and header layout
+
   - Example: `src/app/(dashboard)/home/page.tsx`
   - Uses `src/app/(dashboard)/layout.tsx` for shared dashboard UI
 
@@ -37,6 +39,7 @@ Route groups (parentheses) don't affect URL structure - they only organize layou
 ### State Management
 
 Redux Toolkit with persistence:
+
 - Store configuration: `src/store/index.ts`
 - Feature slices: `src/store/features/` (e.g., `src/store/features/user/userSlice.ts`)
 - Typed hooks: `src/store/hooks.ts` exports `useAppDispatch` and `useAppSelector`
@@ -45,6 +48,7 @@ Redux Toolkit with persistence:
 ### Provider Hierarchy
 
 Provider wrapping order in `src/app/layout.tsx`:
+
 1. Redux `<Providers>` (wraps redux-persist's PersistGate) - `src/app/providers.tsx`
 2. `<ThemeProvider>` - Dark/light mode context from `src/context/ThemeContext.tsx`
 3. `<SidebarProvider>` - Sidebar state (expanded/collapsed, mobile open/closed) from `src/context/SidebarContext.tsx`
@@ -52,12 +56,14 @@ Provider wrapping order in `src/app/layout.tsx`:
 ### Layout Components
 
 Dashboard layout structure (`src/layout/`):
+
 - `AppHeader.tsx` - Top navigation bar
 - `AppSidebar.tsx` - Left sidebar navigation
 - `Backdrop.tsx` - Mobile overlay when sidebar is open
 - `SidebarWidget.tsx` - Reusable sidebar content components
 
 The dashboard layout uses responsive margins that adjust based on sidebar state:
+
 - Desktop: `lg:mr-[290px]` when expanded, `lg:mr-[90px]` when collapsed
 - Mobile: Sidebar slides over content with backdrop
 

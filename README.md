@@ -1,8 +1,8 @@
-# TypeScriptNextJsDashboard
+# Samurai04Web
 
 ## Overview
 
-This is a starter project for a dashboard application built with Next.js and TypeScript. It will use Tailwind CSS for styling and Redux Toolkit for state management. The navigation and folder structure will use App Router.
+This is the chat interface for the Samurai04 application built with Next.js and TypeScript. It will use Tailwind CSS for styling and Redux Toolkit for state management. The navigation and folder structure will use App Router.
 
 ### Overview TL;DR
 
